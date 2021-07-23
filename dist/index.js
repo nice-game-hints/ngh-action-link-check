@@ -72,7 +72,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getJson = exports.getYaml = void 0;
 const fs = __importStar(__nccwpck_require__(5747));
 const errors_1 = __nccwpck_require__(9292);
+// tslint:disable-next-line
 const yaml = __nccwpck_require__(1917);
+// tslint:disable-next-line
 const getYaml = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let fileContents = yield fs.promises.readFile(filePath, { encoding: 'utf-8' });
@@ -86,14 +88,16 @@ const getYaml = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
         return yaml.load(fileContents);
     }
     catch (ex) {
-        console.log('yaml load failed for ', ex);
         throw new errors_1.InvalidFileError(filePath, ex);
     }
 });
 exports.getYaml = getYaml;
+// tslint:disable-next-line
 const getJson = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const fileContents = yield fs.promises.readFile(filePath, { encoding: 'utf-8' });
+        const fileContents = yield fs.promises.readFile(filePath, {
+            encoding: 'utf-8'
+        });
         const json = JSON.parse(fileContents);
         return json;
     }
@@ -150,11 +154,13 @@ function run() {
             const mdGlob = core.getInput('mdGlob') || '**/*.md';
             core.info('check ngh links');
             const validationResults = yield ngh_link_validator_1.validateLinks(workspaceRoot, mdGlob);
-            const invalidResults = validationResults.filter(res => !res.valid).map(res => res.filePath);
+            const invalidResults = validationResults
+                .filter(res => !res.valid)
+                .map(res => res.filePath);
             const invalidFiles = invalidResults.length > 0 ? invalidResults.join(',') : '';
-            core.setOutput("invalidFiles", invalidFiles);
+            core.setOutput('invalidFiles', invalidFiles);
             if (invalidResults.length > 0) {
-                core.warning('Invalid Files: ' + invalidFiles);
+                core.warning(`Invalid Files: ${invalidFiles}`);
                 core.setFailed('NGH metadata linking validation failed on one or more YAML files.');
             }
             else {
@@ -213,13 +219,15 @@ const glob_1 = __nccwpck_require__(1957);
 const file_reader_1 = __nccwpck_require__(362);
 const validateLinks = (workspaceRoot, mdGlob) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        //TODO: improve this implementation - e.g. use the glob patterns from the yaml.schemas settings        
+        //TODO: improve this implementation - e.g. use the glob patterns from the yaml.schemas settings
         const filePaths = yield new Promise((c, e) => {
             glob_1.glob(mdGlob, {
                 cwd: workspaceRoot,
                 silent: true,
-                nodir: true,
-            }, (err, files) => {
+                nodir: true
+            }, 
+            // tslint:disable-next-line
+            (err, files) => {
                 if (err) {
                     e(err);
                 }
@@ -236,18 +244,17 @@ const validateLinks = (workspaceRoot, mdGlob) => __awaiter(void 0, void 0, void 
                     let linkPath = path.join(workspaceRoot, link);
                     linkPath = linkPath.replace(/#\w+\s*$/, '');
                     // TODO: Support also checking hashtags!
-                    const a = [linkPath, linkPath + '.md'];
-                    a.forEach(lp => {
+                    for (const lp of [linkPath, `${linkPath}.md`]) {
                         if (fs.existsSync(lp)) {
                             result = true;
                         }
-                    });
+                    }
                 }
                 else {
                     result = true;
                 }
                 if (!result) {
-                    core.warning(filePath + ' had dead link to ' + link);
+                    core.warning(`${filePath} had dead link to ${link}`);
                 }
                 return { filePath, valid: result };
             }
