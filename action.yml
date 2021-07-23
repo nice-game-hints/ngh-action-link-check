@@ -1,11 +1,11 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'ngh-action-link-check'
+description: 'Checks NGH guide metadata links'
+author: 'Juho Rutila'
 inputs:
-  milliseconds: # change this
+  globMd:
+    description: 'What files to check'
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    default: '**/*.md'
 runs:
   using: 'node12'
   main: 'dist/index.js'

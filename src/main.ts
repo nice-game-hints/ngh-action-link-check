@@ -1,18 +1,28 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+// import * as github from '@actions/github'
+import { validateLinks } from './ngh-link-validator';
+
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
+    const workspaceRoot = process.env['GITHUB_WORKSPACE'] || process.cwd();
+    const mdGlob = core.getInput('mdGlob') || '**/*.md'
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    core.info('check ngh links')
+    const validationResults = await validateLinks(workspaceRoot, mdGlob);
+    const invalidResults = validationResults.filter(res => !res.valid).map(res => res.filePath);
+    const invalidFiles = invalidResults.length > 0 ? invalidResults.join(',') : '';
+    core.setOutput("invalidFiles", invalidFiles);
 
-    core.setOutput('time', new Date().toTimeString())
+    if (invalidResults.length > 0) {
+        core.warning('Invalid Files: ' + invalidFiles);
+        core.setFailed('NGH metadata linking validation failed on one or more YAML files.');
+    } else {
+      core.info(`✅ NGH metadata linking validation completed successfully`);
+    }
+
   } catch (error) {
-    core.setFailed(error.message)
+    core.setFailed(error.message);
   }
 }
 
