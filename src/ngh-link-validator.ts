@@ -32,6 +32,7 @@ export const validateLinks = async (
         }
       )
     })
+    core.info(filePaths.join(' - '))
 
     return await Promise.all(
       filePaths.map(async filePath => {
