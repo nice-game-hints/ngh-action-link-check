@@ -15,6 +15,7 @@ export const validateLinks = async (
 ): Promise<ValidationResult[]> => {
   try {
     //TODO: improve this implementation - e.g. use the glob patterns from the yaml.schemas settings
+    core.info('following filepaths found')
     const filePaths = await new Promise<string[]>((c, e) => {
       glob(
         mdGlob,
@@ -32,7 +33,6 @@ export const validateLinks = async (
         }
       )
     })
-    core.info('following filepaths found')
     core.info(filePaths.join(' - '))
 
     return await Promise.all(
