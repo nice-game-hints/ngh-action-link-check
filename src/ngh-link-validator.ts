@@ -32,6 +32,7 @@ export const validateLinks = async (
         }
       )
     })
+    core.info('following filepaths found')
     core.info(filePaths.join(' - '))
 
     return await Promise.all(
