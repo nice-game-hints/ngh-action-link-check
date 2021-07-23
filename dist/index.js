@@ -153,8 +153,8 @@ function run() {
             const workspaceRoot = process.env['GITHUB_WORKSPACE'] || process.cwd();
             const mdGlob = core.getInput('mdGlob') || '**/*.md';
             core.info('check ngh links');
-            core.info('wsroot ' + workspaceRoot);
-            core.info('mdGlob ' + mdGlob);
+            core.info(workspaceRoot);
+            core.info(mdGlob);
             const validationResults = yield ngh_link_validator_1.validateLinks(workspaceRoot, mdGlob);
             core.debug(validationResults.join(' '));
             const invalidResults = validationResults
@@ -223,6 +223,7 @@ const file_reader_1 = __nccwpck_require__(362);
 const validateLinks = (workspaceRoot, mdGlob) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //TODO: improve this implementation - e.g. use the glob patterns from the yaml.schemas settings
+        core.info('following filepaths found');
         const filePaths = yield new Promise((c, e) => {
             glob_1.glob(mdGlob, {
                 cwd: workspaceRoot,
@@ -237,6 +238,7 @@ const validateLinks = (workspaceRoot, mdGlob) => __awaiter(void 0, void 0, void 
                 c(files);
             });
         });
+        core.info(filePaths.join(' - '));
         return yield Promise.all(filePaths.map((filePath) => __awaiter(void 0, void 0, void 0, function* () {
             try {
                 core.debug(filePath);

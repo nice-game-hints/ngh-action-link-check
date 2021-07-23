@@ -8,8 +8,8 @@ async function run(): Promise<void> {
     const mdGlob = core.getInput('mdGlob') || '**/*.md'
 
     core.info('check ngh links')
-    core.info('wsroot ' + workspaceRoot)
-    core.info('mdGlob ' + mdGlob)
+    core.info(workspaceRoot)
+    core.info(mdGlob)
     const validationResults = await validateLinks(workspaceRoot, mdGlob)
     core.debug(validationResults.join(' '))
     const invalidResults = validationResults
