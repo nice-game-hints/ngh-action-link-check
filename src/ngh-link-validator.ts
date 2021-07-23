@@ -38,11 +38,13 @@ export const validateLinks = async (
     return await Promise.all(
       filePaths.map(async filePath => {
         try {
-          core.debug(filePath)
+          core.info(filePath)
           const yamlDocument = await getYaml(path.join(workspaceRoot, filePath))
+          core.info(yamlDocument)
           let result = false
           const link = yamlDocument ? yamlDocument['link'] : null
           if (link) {
+            core.info(link)
             let linkPath = path.join(workspaceRoot, link)
             linkPath = linkPath.replace(/#\w+\s*$/, '')
             // TODO: Support also checking hashtags!

@@ -241,11 +241,13 @@ const validateLinks = (workspaceRoot, mdGlob) => __awaiter(void 0, void 0, void 
         core.info(filePaths.join(' - '));
         return yield Promise.all(filePaths.map((filePath) => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                core.debug(filePath);
+                core.info(filePath);
                 const yamlDocument = yield file_reader_1.getYaml(path.join(workspaceRoot, filePath));
+                core.info(yamlDocument);
                 let result = false;
                 const link = yamlDocument ? yamlDocument['link'] : null;
                 if (link) {
+                    core.info(link);
                     let linkPath = path.join(workspaceRoot, link);
                     linkPath = linkPath.replace(/#\w+\s*$/, '');
                     // TODO: Support also checking hashtags!
