@@ -37,15 +37,11 @@ export const validateLinks = async (
 
     return await Promise.all(
       filePaths.map(async filePath => {
-        core.info('1')
         try {
-          core.info('2')
           const yamlDocument = await getYaml(path.join(workspaceRoot, filePath))
-          core.info(yamlDocument)
           let result = false
           const link = yamlDocument ? yamlDocument['link'] : null
           if (link) {
-            core.info(link)
             let linkPath = path.join(workspaceRoot, link)
             linkPath = linkPath.replace(/#\w+\s*$/, '')
             // TODO: Support also checking hashtags!
@@ -58,6 +54,7 @@ export const validateLinks = async (
             result = true
           }
 
+          core.info(filePath)
           if (!result) {
             core.warning(`${filePath} had dead link to ${link}`)
           }
