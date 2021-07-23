@@ -2,7 +2,7 @@ name: 'ngh-action-link-check'
 description: 'Checks NGH guide metadata links'
 author: 'Juho Rutila'
 inputs:
-  globMd:
+  mdGlob:
     description: 'What files to check'
     required: true
     default: '**/*.md'

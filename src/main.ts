@@ -8,7 +8,10 @@ async function run(): Promise<void> {
     const mdGlob = core.getInput('mdGlob') || '**/*.md'
 
     core.info('check ngh links')
+    core.info('wsroot ' + workspaceRoot)
+    core.info('mdGlob ' + mdGlob)
     const validationResults = await validateLinks(workspaceRoot, mdGlob)
+    core.debug(validationResults.join(' '))
     const invalidResults = validationResults
       .filter(res => !res.valid)
       .map(res => res.filePath)
