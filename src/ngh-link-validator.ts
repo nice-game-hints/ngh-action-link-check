@@ -37,8 +37,9 @@ export const validateLinks = async (
 
     return await Promise.all(
       filePaths.map(async filePath => {
+        core.info('1')
         try {
-          core.info(filePath)
+          core.info('2')
           const yamlDocument = await getYaml(path.join(workspaceRoot, filePath))
           core.info(yamlDocument)
           let result = false

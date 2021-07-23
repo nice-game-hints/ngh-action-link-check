@@ -240,8 +240,9 @@ const validateLinks = (workspaceRoot, mdGlob) => __awaiter(void 0, void 0, void 
         });
         core.info(filePaths.join(' - '));
         return yield Promise.all(filePaths.map((filePath) => __awaiter(void 0, void 0, void 0, function* () {
+            core.info('1');
             try {
-                core.info(filePath);
+                core.info('2');
                 const yamlDocument = yield file_reader_1.getYaml(path.join(workspaceRoot, filePath));
                 core.info(yamlDocument);
                 let result = false;
