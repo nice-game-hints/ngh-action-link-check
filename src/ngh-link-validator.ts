@@ -108,6 +108,7 @@ export const validateLinks = async (
           return {filePath, valid: false}
         }
 
+        core.info(`${filePath} handled`)
         return {filePath, valid: result}
       })
     )
