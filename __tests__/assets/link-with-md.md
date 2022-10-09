@@ -1,3 +1,0 @@
----
-link: /assets/link.md
----

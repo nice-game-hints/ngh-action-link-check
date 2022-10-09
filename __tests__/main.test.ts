@@ -6,13 +6,26 @@ import {expect, test} from '@jest/globals'
 
 test('validate links', async () => {
   const validationResults = await validateLinks(
-    path.join(process.cwd(), '__tests__'),
-    'assets/*.md'
+    path.join(process.cwd(), '__tests__', 'assets', 'metadata-links'),
+    '*.md'
   )
   expect(validationResults.length).toBe(6)
   const invalidResults = validationResults
     .filter(res => !res.valid)
     .map(res => res.filePath)
   expect(invalidResults.length).toBe(1)
-  expect(invalidResults[0]).toBe('assets/does-not-exist.md')
+  expect(invalidResults[0]).toBe('does-not-exist.md')
+})
+
+test('validate in text single word links', async () => {
+  const validationResults = await validateLinks(
+    path.join(process.cwd(), '__tests__', 'assets', 'in-text-links'),
+    '*.md'
+  )
+  expect(validationResults.length).toBe(2)
+  const invalidResults = validationResults
+    .filter(res => !res.valid)
+    .map(res => res.filePath)
+  expect(invalidResults.length).toBe(1)
+  expect(invalidResults[0]).toBe('link-in-text.md')
 })
