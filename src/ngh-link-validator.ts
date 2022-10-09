@@ -91,13 +91,13 @@ export const validateLinks = async (
             files = files.map(file => file.replace(workspaceRoot, ''))
             core.info('found files')
             core.info(files.join(','))
-            links.map((link: string) => {
+            links.map((l: string) => {
               let linkFound = false
-              if (files.find(f => f.endsWith(`/${link}.md`))) linkFound = true // just a file
-              if (files.find(f => f.endsWith(`/${link}/index.md`))) linkFound = true // a folder
+              if (files.find(f => f.endsWith(`/${l}.md`))) linkFound = true // just a file
+              if (files.find(f => f.endsWith(`/${l}/index.md`))) linkFound = true // a folder
 
               if (!linkFound) {
-                core.warning(`${filePath} had dead link to ${link}`)
+                core.warning(`${filePath} had dead link to ${l}`)
                 result = false
               }
             })
