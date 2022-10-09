@@ -86,11 +86,9 @@ export const validateLinks = async (
           links = links.filter((l: string) => !l.endsWith('.md'))
           if (links.length > 0) {
             core.info('found links')
-            core.info(links)
+            core.info(links.join(' - '))
             let files = await getFiles(workspaceRoot)
             files = files.map(file => file.replace(workspaceRoot, ''))
-            core.info('found files')
-            core.info(files.join(','))
             links.map((l: string) => {
               let linkFound = false
               if (files.find(f => f.endsWith(`/${l}.md`))) linkFound = true // just a file
@@ -101,6 +99,8 @@ export const validateLinks = async (
                 result = false
               }
             })
+          } else {
+            core.info(`no links for ${filePath} found`)
           }
         } catch (e) {
           core.error(filePath)
