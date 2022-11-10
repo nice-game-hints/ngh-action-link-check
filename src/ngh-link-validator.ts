@@ -84,7 +84,7 @@ export const validateLinks = async (
 
           links = links.map((l: string) => l.replace(/#\w+\s*$/, ''))
           links = links.filter((l: string) => !l.endsWith('.md'))
-          links = links.filter((l: string) => l.startsWith('http'))
+          links = links.filter((l: string) => !l.startsWith('http'))
           if (links.length > 0) {
             core.debug(` ${filePath} found links`)
             core.debug('  ' + links.join(' - '))
