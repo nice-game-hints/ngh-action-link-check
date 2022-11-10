@@ -102,7 +102,7 @@ const validateLinks = (workspaceRoot, mdGlob) => __awaiter(void 0, void 0, void 
                 }
                 links = links.map((l) => l.replace(/#\w+\s*$/, ''));
                 links = links.filter((l) => !l.endsWith('.md'));
-                links = links.filter((l) => l.startsWith('http'));
+                links = links.filter((l) => !l.startsWith('http'));
                 if (links.length > 0) {
                     core.debug(` ${filePath} found links`);
                     core.debug('  ' + links.join(' - '));
