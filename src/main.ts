@@ -11,9 +11,6 @@ async function run(): Promise<void> {
     core.info(workspaceRoot)
     core.info(mdGlob)
     const validationResults = await validateLinks(workspaceRoot, mdGlob)
-    core.info('validation ready, debug validationResults')
-    core.debug(validationResults.join(' '))
-    core.info('validationResults end')
     const invalidResults = validationResults
       .filter(res => !res.valid)
       .map(res => res.filePath)

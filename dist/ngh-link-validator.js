@@ -102,9 +102,10 @@ const validateLinks = (workspaceRoot, mdGlob) => __awaiter(void 0, void 0, void 
                 }
                 links = links.map((l) => l.replace(/#\w+\s*$/, ''));
                 links = links.filter((l) => !l.endsWith('.md'));
+                links = links.filter((l) => l.startsWith('http'));
                 if (links.length > 0) {
-                    core.info('found links');
-                    core.info(links.join(' - '));
+                    core.debug(` ${filePath} found links`);
+                    core.debug('  ' + links.join(' - '));
                     let files = yield getFiles(workspaceRoot);
                     files = files.map(file => file.replace(workspaceRoot, ''));
                     links.map((l) => {
@@ -120,7 +121,7 @@ const validateLinks = (workspaceRoot, mdGlob) => __awaiter(void 0, void 0, void 
                     });
                 }
                 else {
-                    core.info(`no links for ${filePath} found`);
+                    core.debug(`no links for ${filePath} found`);
                 }
             }
             catch (e) {
@@ -128,7 +129,7 @@ const validateLinks = (workspaceRoot, mdGlob) => __awaiter(void 0, void 0, void 
                 core.error(e);
                 return { filePath, valid: false };
             }
-            core.info(`${filePath} handled`);
+            core.debug(`${filePath} handled`);
             return { filePath, valid: result };
         })));
     }

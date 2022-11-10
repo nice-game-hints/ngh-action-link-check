@@ -40,9 +40,6 @@ function run() {
             core.info(workspaceRoot);
             core.info(mdGlob);
             const validationResults = yield ngh_link_validator_1.validateLinks(workspaceRoot, mdGlob);
-            core.info('validation ready, debug validationResults');
-            core.debug(validationResults.join(' '));
-            core.info('validationResults end');
             const invalidResults = validationResults
                 .filter(res => !res.valid)
                 .map(res => res.filePath);
