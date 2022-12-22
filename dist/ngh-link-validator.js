@@ -101,8 +101,9 @@ const validateLinks = (workspaceRoot, mdGlob) => __awaiter(void 0, void 0, void 
                     links = [link].concat(links); // prepend
                 }
                 links = links.map((l) => l.replace(/#\w+\s*$/, ''));
-                links = links.filter((l) => !l.endsWith('.md'));
+                links = links.filter((l) => !l.match(/\.[a-z0-9]{0,4}$/));
                 links = links.filter((l) => !l.startsWith('http'));
+                links = links.filter((l) => !(l.startsWith('(') && l.endsWith(')')));
                 if (links.length > 0) {
                     core.debug(` ${filePath} found links`);
                     core.debug('  ' + links.join(' - '));
@@ -110,9 +111,9 @@ const validateLinks = (workspaceRoot, mdGlob) => __awaiter(void 0, void 0, void 
                     files = files.map(file => file.replace(workspaceRoot, ''));
                     links.map((l) => {
                         let linkFound = false;
-                        if (files.find(f => f.endsWith(`/${l}.md`)))
+                        if (files.find(f => f.endsWith(`${path.sep}${l}.md`)))
                             linkFound = true; // just a file
-                        if (files.find(f => f.endsWith(`/${l}/index.md`)))
+                        if (files.find(f => f.endsWith(`${path.sep}${l}${path.sep}index.md`)))
                             linkFound = true; // a folder
                         if (!linkFound) {
                             core.warning(`${filePath} had dead link to ${l}`);
