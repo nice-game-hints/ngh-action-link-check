@@ -22,7 +22,7 @@ test('validate in text single word links', async () => {
     path.join(process.cwd(), '__tests__', 'assets', 'in-text-links'),
     '*.md'
   )
-  expect(validationResults.length).toBe(2)
+  expect(validationResults.length).toBe(4)
   const invalidResults = validationResults
     .filter(res => !res.valid)
     .map(res => res.filePath)

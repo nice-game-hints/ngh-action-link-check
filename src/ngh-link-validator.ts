@@ -83,8 +83,10 @@ export const validateLinks = async (
           }
 
           links = links.map((l: string) => l.replace(/#\w+\s*$/, ''))
-          links = links.filter((l: string) => !l.endsWith('.md'))
+          links = links.filter((l: string) => !l.match(/\.[a-z0-9]{0,4}$/))
+
           links = links.filter((l: string) => !l.startsWith('http'))
+          links = links.filter((l: string) => !(l.startsWith('(') && l.endsWith(')')))
           if (links.length > 0) {
             core.debug(` ${filePath} found links`)
             core.debug('  ' + links.join(' - '))
@@ -93,7 +95,7 @@ export const validateLinks = async (
             links.map((l: string) => {
               let linkFound = false
               if (files.find(f => f.endsWith(`${path.sep}${l}.md`))) linkFound = true // just a file
-              if (files.find(f => f.endsWith(`${path.sep}${l}/index.md`))) linkFound = true // a folder
+              if (files.find(f => f.endsWith(`${path.sep}${l}${path.sep}index.md`))) linkFound = true // a folder
 
               if (!linkFound) {
                 core.warning(`${filePath} had dead link to ${l}`)
