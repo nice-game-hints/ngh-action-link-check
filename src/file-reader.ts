@@ -15,7 +15,7 @@ export const getYaml = async (filePath: string): Promise<any> => {
     }
     return yaml.load(fileContents)
   } catch (ex) {
-    throw new InvalidFileError(filePath, ex)
+    throw new InvalidFileError(filePath, ex as Error)
   }
 }
 
@@ -28,6 +28,6 @@ export const getJson = async (filePath: string): Promise<any> => {
     const json = JSON.parse(fileContents)
     return json
   } catch (ex) {
-    throw new InvalidFileError(filePath, ex)
+    throw new InvalidFileError(filePath, ex as Error)
   }
 }

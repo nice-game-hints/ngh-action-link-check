@@ -107,7 +107,7 @@ export const validateLinks = async (
           }
         } catch (e) {
           core.error(filePath)
-          core.error(e)
+          core.error(e as Error)
           return {filePath, valid: false}
         }
 
@@ -117,7 +117,7 @@ export const validateLinks = async (
     )
   } catch (err) {
     core.error(workspaceRoot)
-    core.error(err)
+    core.error(err as Error)
     return [{filePath: workspaceRoot, valid: false}]
   }
 }
