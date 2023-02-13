@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -39,8 +43,8 @@ const core = __importStar(require("@actions/core"));
 const glob_1 = require("glob");
 const file_reader_1 = require("./file-reader");
 const markdown_link_extractor_1 = __importDefault(require("markdown-link-extractor"));
-const readdir = util_1.promisify(fs.readdir);
-const stat = util_1.promisify(fs.stat);
+const readdir = (0, util_1.promisify)(fs.readdir);
+const stat = (0, util_1.promisify)(fs.stat);
 function getFiles(dir) {
     return __awaiter(this, void 0, void 0, function* () {
         const subdirs = yield readdir(dir);
@@ -56,7 +60,7 @@ const validateLinks = (workspaceRoot, mdGlob) => __awaiter(void 0, void 0, void 
         //TODO: improve this implementation - e.g. use the glob patterns from the yaml.schemas settings
         core.info('following filepaths found');
         const filePaths = yield new Promise((c, e) => {
-            glob_1.glob(mdGlob, {
+            (0, glob_1.glob)(mdGlob, {
                 cwd: workspaceRoot,
                 silent: true,
                 nodir: true
@@ -94,14 +98,14 @@ const validateLinks = (workspaceRoot, mdGlob) => __awaiter(void 0, void 0, void 
                 */
                 // Extract all md links and add yaml link
                 const markdown = fs.readFileSync(path.join(workspaceRoot, filePath), { encoding: 'utf8' });
-                let { links } = markdown_link_extractor_1.default(markdown);
-                const yamlDocument = yield file_reader_1.getYaml(path.join(workspaceRoot, filePath));
+                let { links } = (0, markdown_link_extractor_1.default)(markdown);
+                const yamlDocument = yield (0, file_reader_1.getYaml)(path.join(workspaceRoot, filePath));
                 const link = yamlDocument ? yamlDocument['link'] : null;
                 if (link) {
                     links = [link].concat(links); // prepend
                 }
                 links = links.map((l) => l.replace(/#\w+\s*$/, ''));
-                links = links.filter((l) => !l.match(/\.[a-z0-9]{0,4}$/));
+                links = links.filter((l) => !l.match(/\.[a-zA-Z0-9]{0,4}$/));
                 links = links.filter((l) => !l.startsWith('http'));
                 links = links.filter((l) => !(l.startsWith('(') && l.endsWith(')')));
                 if (links.length > 0) {
