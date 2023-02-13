@@ -83,7 +83,7 @@ export const validateLinks = async (
           }
 
           links = links.map((l: string) => l.replace(/#\w+\s*$/, ''))
-          links = links.filter((l: string) => !l.match(/\.[a-z0-9]{0,4}$/))
+          links = links.filter((l: string) => !l.match(/\.[a-zA-Z0-9]{0,4}$/))
 
           links = links.filter((l: string) => !l.startsWith('http'))
           links = links.filter((l: string) => !(l.startsWith('(') && l.endsWith(')')))
